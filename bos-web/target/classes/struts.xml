@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<constant name="struts.devMode" value="true" />
+	<!-- <constant name="struts.objectFactory" value="spring" /> -->
+	
+	<package name="basicstruts2" extends="struts-default">
+		<interceptors>
+			<!-- 注册自定义拦截器 -->
+			<interceptor name="bosLoginInterceptor" class="com.fly.web.interceptor.BOSLoginInterceptor">
+				<!-- 指定哪些方法不需要拦截 -->
+				<param name="excludeMethods">login</param>
+			</interceptor>
+			<!-- 定义拦截器栈 -->
+			<interceptor-stack name="myStack">
+				<interceptor-ref name="bosLoginInterceptor"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		
+		<default-interceptor-ref name="myStack"/>
+		
+		<!-- 全局结果集定义 -->
+		<global-results>
+			<result name="login">/login.jsp</result>
+			<result name="unauthorized">/unauthorized.jsp</result>
+		</global-results>
+		
+		<global-exception-mappings>
+			<exception-mapping result="unauthorized" 
+				exception="org.apache.shiro.authz.UnauthorizedException"></exception-mapping>
+		</global-exception-mappings>
+		
+		<action name="page_*_*">
+			<result type="dispatcher">/WEB-INF/pages/{1}/{2}.jsp</result>
+		</action>
+		
+		<!-- 用户管理 -->
+		<!-- class为什么必须写全路径名称? -->
+<!-- user action -->
+		<action name="user_*" class="com.fly.web.action.UserAction" method="{1}">
+			<result name="home" type="redirect">/index.jsp</result>
+			<result name="list">/WEB-INF/pages/admin/userlist.jsp</result>
+		</action>
+		
+<!-- staff action -->
+		<action name="staff_*" class="com.fly.web.action.StaffAction" method="{1}">
+			<result name="list">/WEB-INF/pages/base/staff.jsp</result>
+		</action>
+		
+<!-- region action -->
+		<action name="region_*" class="com.fly.web.action.RegionAction" method="{1}"></action>
+		
+<!-- subarea action -->
+		<action name="subarea_*" class="com.fly.web.action.SubareaAction" method="{1}">
+			<result name="list">/WEB-INF/pages/base/subarea.jsp</result>
+		</action>
+		
+<!-- decidedzone action -->
+		<action name="decidedzone_*" class="com.fly.web.action.DecidedzoneAction" method="{1}">
+			<result name="list">/WEB-INF/pages/base/decidedzone.jsp</result>
+		</action>
+		
+<!-- noticebill action -->
+		<action name="noticebill_*" class="com.fly.web.action.NoticebillAction" method="{1}">
+			<result name="list">/index.jsp</result>
+			<result name="noticebill_add">/WEB-INF/pages/qupai/noticebill.jsp</result>
+		</action>
+		
+<!-- workordermanager action -->
+		<action name="workordermanager_*" class="com.fly.web.action.WorkordermanagerAction" method="{1}"></action>
+		
+<!-- function action -->
+		<action name="function_*" class="com.fly.web.action.FunctionAction" method="{1}">
+			<result name="list">/WEB-INF/pages/admin/function.jsp</result>
+		</action>
+		
+<!-- role action -->
+		<action name="role_*" class="com.fly.web.action.RoleAction" method="{1}">
+			<result name="list">/WEB-INF/pages/admin/role.jsp</result>
+		</action>
+		
+	</package>
+	
+</struts>

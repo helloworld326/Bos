@@ -1,0 +1,16 @@
+#MyEclipse Hibernate Properties
+#Sun Aug 20 20:40:44 CST 2017
+genVersionTag=false
+genAnnotations=false
+configFile=/bos-entity/<No configs found>
+reStrategyClass=
+sessionFactoryId=sessionFactory
+profile=
+detectM2M=false
+genBasicCompId=false
+keyGenerator=
+createConfigFile=true
+basePersistenceClass=
+detectO2O=false
+useJavaTypes=true
+reSettingsFile=

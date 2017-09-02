@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<!-- <constant name="struts.objectFactory" value="spring" /> -->
+	
+	<package name="basicstruts2" extends="struts-default">
+		<interceptors>
+			<!-- 注册自定义拦截器 -->
+			<interceptor name="bosLoginInterceptor" class="com.fly.web.interceptor.BOSLoginInterceptor">
+				<!-- 指定哪些方法不需要拦截 -->
+				<param name="excludeMethods">login</param>
+			</interceptor>
+			<!-- 定义拦截器栈 -->
+			<interceptor-stack name="myStack">
+				<interceptor-ref name="bosLoginInterceptor"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		
+		<default-interceptor-ref name="myStack"/>
+		
+		<!-- 全局结果集定义 -->
+		<global-results>
+			<result name="login">/login.jsp</result>
+		</global-results>
+		
+		<action name="page_*_*">
+			<result type="dispatcher">/WEB-INF/pages/{1}/{2}.jsp</result>
+		</action>
+		
+		<!-- 用户管理 -->
+		<!-- class为什么必须写全路径名称? -->
+<!-- user action -->
+		<action name="user_*" class="com.fly.web.action.UserAction" method="{1}">
+			<result name="login" type="redirect">/login.jsp</result>
+			<result name="home" type="redirect">/index.jsp</result>
+		</action>
+		<!-- <action name="user_*" class="userAction" method="{1}">
+			<result name="login">/login.jsp</result>
+		</action> -->
+		
+<!-- staff action -->
+		<action name="staff_*" class="com.fly.web.action.StaffAction" method="{1}">
+			<result name="list">/WEB-INF/pages/base/staff.jsp</result>
+		</action>
+		
+<!-- region action -->
+		<action name="region_*" class="com.fly.web.action.RegionAction" method="{1}"></action>
+		
+<!-- subarea action -->
+		<action name="subarea_*" class="com.fly.web.action.SubareaAction" method="{1}">
+			<result name="list">/WEB-INF/pages/base/subarea.jsp</result>
+		</action>
+		
+<!-- decidedzone action -->
+		<action name="decidedzone_*" class="com.fly.web.action.DecidedzoneAction" method="{1}">
+			<result name="list">/WEB-INF/pages/base/decidedzone.jsp</result>
+		</action>
+		
+	</package>
+	
+</struts>
